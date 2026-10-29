@@ -1,8 +1,8 @@
 # Nexus: Smart Health & Fitness Tracker
 
-Nexus is a planned browser-based health and fitness tracking application for **CSAI 203: Introduction to Software Engineering, Fall 2026**, at Zewail City of Science, Technology and Innovation.
+Nexus is a browser-based health and fitness tracking project for CSAI 203, Introduction to Software Engineering, Fall 2026, at Zewail City of Science, Technology and Innovation.
 
-The application is intended to help members record workouts and meals, track calorie intake, set fitness goals, review daily summaries and progress charts, record body measurements, and create or share workout routines. Administrators will maintain the food catalogue, manage member accounts, and review reports about shared routines.
+The planned application lets members keep track of workouts and meals, set fitness goals, check daily summaries, view progress over time, record body measurements, and share workout routines. Administrators manage the food catalogue and member accounts, and review reports about shared routines.
 
 ## Team Members
 
@@ -13,39 +13,39 @@ The application is intended to help members record workouts and meals, track cal
 | Yehia Aly | 202400641 |
 | Abdelrhman Tarek | 202402412 |
 
-**Team Representative:** Mostafa Harhash (202401133)  
-**Team Number:** To be confirmed
+**Team representative:** Mostafa Harhash (202401133)  
+**Team number:** To be confirmed
 
 ## Planned Features
 
-- Account registration, sign-in/sign-out, password recovery, and profile management
-- Workout logging, editing, deletion, and history filtering
-- Food catalogue search and meal logging with estimated calories
-- Daily calorie targets and personal fitness goals
-- Daily summaries and progress charts
-- Body measurement history
-- Creating, editing, publishing, and sharing workout routines
-- Saving and reporting shared routines
-- Administrative food catalogue and member account management
-- Reviewing reports and moderating shared routines
+- Create an account, sign in, manage a profile, and recover account access
+- Log workouts and view or filter workout history
+- Search the food catalogue and record meals with estimated calories
+- Set daily calorie targets and fitness goals
+- Review daily summaries and progress charts
+- Record body measurements over time
+- Create, edit, publish, and share workout routines
+- Save shared routines and report content
+- Let administrators maintain food entries and manage member accounts
+- Let administrators review reports and moderate shared routines
 
 ## Repository Structure
 
-- `docs/` — SRS and supporting project documentation
-- `src/` — Application source code
-- `tests/` — Test cases, test plans, and test-related files
-- `deployment/` — Deployment configuration and setup instructions
+- `docs/`: SRS and supporting documentation
+- `src/`: Application source code
+- `tests/`: Test cases and test plans
+- `deployment/`: Deployment configuration and setup instructions
 
 ## Architecture and Technology
 
-The project is required to follow the **Model-View-Controller (MVC)** pattern. The implementation framework, database, and other technologies have not yet been finalized and must be confirmed against the instructor's approved technology list.
+The course requires the project to use the Model-View-Controller (MVC) pattern. The team has not yet chosen the framework, database, or full technology stack. These choices will be confirmed against the instructor's approved technology list.
 
 ## Scope
 
-The initial release focuses on manual data entry and basic tracking through a browser. Wearable-device integration and automatic collection of health data are outside the current scope. Nexus does not diagnose medical conditions or prescribe treatment. Calorie and workout energy values are estimates and should not be treated as medical advice.
+The first release is planned around manual data entry in a web browser. Wearable-device integration and automatic health-data collection are outside the current scope. Nexus does not diagnose medical conditions or recommend treatment. Calorie and workout energy values are estimates, not medical advice.
 
 ## Project Status
 
-**Current phase:** Phase 2 — Software Requirements Specification (SRS)
+**Current phase:** Phase 2, Software Requirements Specification (SRS).
 
-The SRS is being finalized. Documentation and implementation files will be added to the repository as they are completed. No specific implementation stack is claimed in this README until the team confirms it.
+The SRS is being finalized. Project documentation and implementation files will be added as they are ready.
