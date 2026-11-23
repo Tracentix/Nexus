@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Measurements - Nexus{% endblock %}
+{% block content %}
+<h1>Body measurements</h1>
+
+<form method="post" class="card inline-fields">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <label for="kind">Kind</label>
+  <select id="kind" name="kind" required>
+    <option value="">Choose...</option>
+    {% for k, u in kinds.items() %}
+      <option value="{{ k }}">{{ k.replace('_', ' ') }} ({{ u }})</option>
+    {% endfor %}
+  </select>
+  <label for="value">Value</label>
+  <input id="value" name="value" type="number" min="0" step="any" required>
+  <label for="measured_on">Date</label>
+  <input id="measured_on" name="measured_on" type="date" max="{{ today }}"
+         value="{{ today }}" required>
+  <button type="submit">Record</button>
+</form>
+
+{% if entries %}
+<table>
+  <thead><tr><th>Date</th><th>Kind</th><th>Value</th><th></th></tr></thead>
+  <tbody>
+    {% for m in entries %}
+    <tr>
+      <td>{{ m.measured_on }}</td>
+      <td>{{ m.kind.replace('_', ' ') }}</td>
+      <td>{{ m.value }} {{ m.unit }}</td>
+      <td>
+        <form class="inline" method="post"
+              action="{{ url_for('goals.measurement_delete', entry_id=m.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <button type="submit" class="linkbtn">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <p class="empty">No measurements recorded yet.</p>
+{% endif %}
+{% endblock %}

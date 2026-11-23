@@ -1,0 +1,9 @@
+{% if results %}
+<ul class="results">
+  {% for f in results %}
+    <li>{{ f.name }} - {{ f.calories_per_unit }} kcal per {{ f.serving_unit }}</li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p class="empty">No active food items match "{{ term }}".</p>
+{% endif %}

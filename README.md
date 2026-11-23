@@ -84,3 +84,34 @@ Before Phase 3, we still need to:
 - choose the frontend, backend and database
 - check whether we can send password-reset emails
 - decide on deployment, starter food data and the scope of account deletion
+
+## Phase 4: core functionality implementation
+
+The Phase 4 prototype implements 15 of the 24 SRS functional requirements
+(the phase minimum is 10): accounts (FR-01 to FR-04), workouts (FR-05 to FR-07),
+food search and meals (FR-08 to FR-10), calorie target and goals (FR-11, FR-12),
+daily summary, progress charts and body measurements (FR-13 to FR-15).
+Routines, sharing and administration (FR-16 to FR-24) are scheduled for Phase 5.
+
+- Report with requirement traceability: [docs/CSAI203_Phase4_TeamXX_202401133.pdf](docs/CSAI203_Phase4_TeamXX_202401133.pdf)
+- Source code (Flask, MVC): `src/`
+- Database schema and seed data: `src/schema.sql`, `src/seed.py`
+- Automated tests: `tests/`
+
+### Run it
+
+```bash
+pip install -r src/requirements.txt
+cd src
+python seed.py    # creates nexus.db with starter food data + demo account
+python run.py     # http://127.0.0.1:5000
+```
+
+Demo member account: `demo@nexus.local` / `demo1234`.
+
+### Tests
+
+```bash
+pip install pytest
+python -m pytest tests/    # 21 tests
+```

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Progress charts - Nexus{% endblock %}
+{% block content %}
+<h1>Progress charts</h1>
+
+<form method="get" class="inline-fields">
+  <label for="days">Period</label>
+  <select id="days" name="days">
+    {% for d in [7, 14, 30] %}
+      <option value="{{ d }}" {% if days == d %}selected{% endif %}>Last {{ d }} days</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Show</button>
+</form>
+
+<p class="muted">{{ start_day }} to {{ end_day }}.</p>
+
+{% if days_with_data < 2 %}
+  <p class="empty">Not enough data in this period to show a trend.
+     Log meals and workouts on more days, then check again.</p>
+{% endif %}
+
+<section class="card">
+  <h2>Daily calorie intake (kcal)</h2>
+  {% if kcal_chart %}
+    {{ kcal_chart | safe }}
+  {% else %}
+    <p class="empty">No meals logged in this period.</p>
+  {% endif %}
+</section>
+
+<section class="card">
+  <h2>Workout minutes per day</h2>
+  {% if minutes_chart %}
+    {{ minutes_chart | safe }}
+  {% else %}
+    <p class="empty">No workouts logged in this period.</p>
+  {% endif %}
+</section>
+{% endblock %}

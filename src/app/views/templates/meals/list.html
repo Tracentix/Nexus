@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Meals - Nexus{% endblock %}
+{% block content %}
+<h1>Meals on {{ day.strftime('%A %d %b %Y') }}</h1>
+
+<form method="get" class="inline-fields">
+  <label for="date">Date</label>
+  <input id="date" name="date" type="date" value="{{ day.isoformat() }}">
+  <button type="submit">Show</button>
+</form>
+
+<p><a class="button" href="{{ url_for('tracking.meal_new') }}">Record a meal</a></p>
+
+{% if entries %}
+<table>
+  <thead>
+    <tr><th>Meal</th><th>Food</th><th>Quantity</th><th>Calories</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for m in entries %}
+    <tr>
+      <td><span class="badge">{{ m.meal_label }}</span></td>
+      <td>{{ m.food.name }}</td>
+      <td>{{ m.quantity }} {{ m.food.serving_unit }}</td>
+      <td>{{ m.calorie_snapshot }} kcal</td>
+      <td>
+        <a href="{{ url_for('tracking.meal_edit', entry_id=m.id) }}">Edit</a>
+        <a href="{{ url_for('tracking.meal_delete', entry_id=m.id) }}">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p><strong>Total: {{ total }} kcal</strong></p>
+{% else %}
+  <p class="empty">No meals logged for this date.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+nexus.db
+.pytest_cache/

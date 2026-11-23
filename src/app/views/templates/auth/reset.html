@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Choose a new password - Nexus{% endblock %}
+{% block content %}
+<h1>Choose a new password</h1>
+<form method="post" class="card form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <label for="new_password">New password (at least 8 characters)</label>
+  <input id="new_password" name="new_password" type="password" required>
+
+  <label for="confirm">Confirm new password</label>
+  <input id="confirm" name="confirm" type="password" required>
+
+  <button type="submit">Reset password</button>
+</form>
+{% endblock %}
