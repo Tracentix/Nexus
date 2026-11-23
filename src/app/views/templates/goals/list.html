@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Goals - Nexus{% endblock %}
+{% block content %}
+<h1>Fitness goals</h1>
+<p><a class="button" href="{{ url_for('goals.goal_new') }}">Add a goal</a></p>
+
+<h2>Active</h2>
+{% if active %}
+<table>
+  <thead><tr><th>Goal</th><th>Type</th><th>Target</th><th>By</th><th></th></tr></thead>
+  <tbody>
+    {% for g in active %}
+    <tr>
+      <td>{{ g.description }}</td>
+      <td><span class="badge muted">{{ g.goal_type.replace('_', ' ') }}</span></td>
+      <td>{{ g.target_value if g.target_value is not none else '-' }}</td>
+      <td>{{ g.target_date or '-' }}</td>
+      <td>
+        <a href="{{ url_for('goals.goal_edit', goal_id=g.id) }}">Edit</a>
+        <form class="inline" method="post"
+              action="{{ url_for('goals.goal_status', goal_id=g.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="status" value="completed">
+          <button type="submit" class="linkbtn">Complete</button>
+        </form>
+        <form class="inline" method="post"
+              action="{{ url_for('goals.goal_status', goal_id=g.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="status" value="inactive">
+          <button type="submit" class="linkbtn">Deactivate</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <p class="empty">No active goals. Add one above.</p>
+{% endif %}
+
+<h2>Completed and inactive</h2>
+{% if archived %}
+<table>
+  <thead><tr><th>Goal</th><th>Type</th><th>Status</th><th></th></tr></thead>
+  <tbody>
+    {% for g in archived %}
+    <tr>
+      <td>{{ g.description }}</td>
+      <td><span class="badge muted">{{ g.goal_type.replace('_', ' ') }}</span></td>
+      <td><span class="badge {{ 'ok' if g.status == 'completed' else 'warn' }}">{{ g.status }}</span></td>
+      <td>
+        <form class="inline" method="post"
+              action="{{ url_for('goals.goal_status', goal_id=g.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="status" value="active">
+          <button type="submit" class="linkbtn">Reactivate</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <p class="empty">Nothing here yet.</p>
+{% endif %}
+{% endblock %}

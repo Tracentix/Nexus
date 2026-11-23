@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Nexus{% endblock %}</title>
+  <script>
+    // Apply the saved theme before first paint to avoid a flash.
+    (function () {
+      var t = localStorage.getItem("nexus-theme");
+      if (!t) {
+        t = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark" : "light";
+      }
+      if (t === "dark") document.documentElement.classList.add("dark");
+    })();
+  </script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="{{ url_for('index') }}">Nexus</a>
+  <nav>
+    {% if session.get('user_id') %}
+      <a href="{{ url_for('dashboard.summary') }}">Dashboard</a>
+      <a href="{{ url_for('tracking.workouts') }}">Workouts</a>
+      <a href="{{ url_for('tracking.meals') }}">Meals</a>
+      <a href="{{ url_for('goals.goals') }}">Goals</a>
+      <a href="{{ url_for('goals.measurements') }}">Measurements</a>
+      <a href="{{ url_for('dashboard.charts') }}">Charts</a>
+      <a href="{{ url_for('profile.show') }}">Profile</a>
+      <form class="inline" method="post" action="{{ url_for('auth.logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button type="submit" class="linkbtn">Sign out</button>
+      </form>
+    {% else %}
+      <a href="{{ url_for('auth.login') }}">Sign in</a>
+      <a href="{{ url_for('auth.register') }}">Register</a>
+    {% endif %}
+  </nav>
+  <button type="button" id="theme-toggle" class="theme-toggle"
+          onclick="toggleTheme()">Dark mode</button>
+</header>
+
+<main class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <p class="flash flash-{{ category }}">{{ message }}</p>
+    {% endfor %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+  Nexus - CSAI 203 course project, Fall 2026.
+</footer>
+</body>
+</html>

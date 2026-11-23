@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ action }} meal - Nexus{% endblock %}
+{% block content %}
+<h1>{{ action }} meal</h1>
+<form method="post" class="card form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+  <label for="food_id">Food item</label>
+  <select id="food_id" name="food_id" required>
+    <option value="">Choose...</option>
+    {% for f in foods %}
+      <option value="{{ f.id }}"
+        {% if entry.food_id == f.id %}selected{% endif %}>
+        {{ f.name }} ({{ f.calories_per_unit }} kcal per {{ f.serving_unit }})
+      </option>
+    {% endfor %}
+  </select>
+
+  <label for="meal_label">Meal</label>
+  <select id="meal_label" name="meal_label" required>
+    <option value="">Choose...</option>
+    {% for l in labels %}
+      <option value="{{ l }}"
+        {% if entry.meal_label == l %}selected{% endif %}>{{ l|capitalize }}</option>
+    {% endfor %}
+  </select>
+
+  <label for="quantity">Quantity (serving units)</label>
+  <input id="quantity" name="quantity" type="number" min="0.1" step="0.1"
+         required value="{{ entry.quantity or '' }}">
+
+  <label for="eaten_on">Date</label>
+  <input id="eaten_on" name="eaten_on" type="date" max="{{ today }}" required
+         value="{{ entry.eaten_on.isoformat() if entry.eaten_on else today }}">
+
+  <button type="submit">{{ action }}</button>
+</form>
+<p class="muted">Calories are calculated as quantity x the catalogue value
+   and stored with the entry.</p>
+{% endblock %}

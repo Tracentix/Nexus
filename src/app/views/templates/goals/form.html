@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ action }} goal - Nexus{% endblock %}
+{% block content %}
+<h1>{{ action }} goal</h1>
+<form method="post" class="card form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+  <label for="goal_type">Goal type</label>
+  <select id="goal_type" name="goal_type" required>
+    <option value="">Choose...</option>
+    {% for t in types %}
+      <option value="{{ t }}"
+        {% if goal.goal_type == t %}selected{% endif %}>{{ t.replace('_', ' ') }}</option>
+    {% endfor %}
+  </select>
+
+  <label for="description">Description</label>
+  <textarea id="description" name="description" rows="2"
+            required>{{ goal.description or '' }}</textarea>
+
+  <label for="target_value">Measurable target (optional)</label>
+  <input id="target_value" name="target_value" type="number" min="0"
+         step="any" value="{{ goal.target_value or '' }}">
+
+  <label for="target_date">Target date (optional)</label>
+  <input id="target_date" name="target_date" type="date"
+         value="{{ goal.target_date.isoformat() if goal.target_date else '' }}">
+
+  <button type="submit">{{ action }}</button>
+</form>
+{% endblock %}

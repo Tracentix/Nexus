@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ action }} workout - Nexus{% endblock %}
+{% block content %}
+<h1>{{ action }} workout</h1>
+<form method="post" class="card form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+  <label for="activity_type">Workout type</label>
+  <select id="activity_type" name="activity_type" required>
+    <option value="">Choose...</option>
+    {% for t in types %}
+      <option value="{{ t }}"
+        {% if entry.activity_type == t %}selected{% endif %}>{{ t }}</option>
+    {% endfor %}
+  </select>
+
+  <label for="started_on">Date</label>
+  <input id="started_on" name="started_on" type="date" max="{{ today }}" required
+         value="{{ entry.started_at.strftime('%Y-%m-%d') if entry.started_at else today }}">
+
+  <label for="duration_minutes">Duration (minutes)</label>
+  <input id="duration_minutes" name="duration_minutes" type="number"
+         min="1" step="1" required
+         value="{{ entry.duration_minutes or '' }}">
+
+  <label for="estimated_kcal">Estimated calories (optional)</label>
+  <input id="estimated_kcal" name="estimated_kcal" type="number"
+         min="0" step="1" value="{{ entry.estimated_kcal or '' }}">
+
+  <label for="notes">Notes (optional)</label>
+  <textarea id="notes" name="notes" rows="2">{{ entry.notes or '' }}</textarea>
+
+  <button type="submit">{{ action }}</button>
+</form>
+{% endblock %}

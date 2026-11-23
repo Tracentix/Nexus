@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Workouts - Nexus{% endblock %}
+{% block content %}
+<h1>Workout history</h1>
+
+<form method="get" class="inline-fields card">
+  <label for="from">From</label>
+  <input id="from" name="from" type="date" value="{{ date_from }}">
+  <label for="to">To</label>
+  <input id="to" name="to" type="date" value="{{ date_to }}">
+  <label for="type">Type</label>
+  <select id="type" name="type">
+    <option value="">All types</option>
+    {% for t in types %}
+      <option value="{{ t }}" {% if t == type_filter %}selected{% endif %}>{{ t }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Filter</button>
+  <a href="{{ url_for('tracking.workouts') }}">Clear</a>
+</form>
+
+<p><a class="button" href="{{ url_for('tracking.workout_new') }}">Record a workout</a></p>
+
+{% if entries %}
+<table>
+  <thead>
+    <tr><th>Date</th><th>Type</th><th>Duration</th><th>Calories</th><th>Notes</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for w in entries %}
+    <tr>
+      <td>{{ w.started_at.strftime('%Y-%m-%d') }}</td>
+      <td><span class="badge">{{ w.activity_type }}</span></td>
+      <td>{{ w.duration_minutes }} min</td>
+      <td>{{ w.estimated_kcal if w.estimated_kcal else '-' }}</td>
+      <td>{{ w.notes or '' }}</td>
+      <td>
+        <a href="{{ url_for('tracking.workout_edit', entry_id=w.id) }}">Edit</a>
+        <a href="{{ url_for('tracking.workout_delete', entry_id=w.id) }}">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <p class="empty">No workouts match. Record your first workout or change the filters.</p>
+{% endif %}
+{% endblock %}

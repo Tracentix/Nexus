@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Profile - Nexus{% endblock %}
+{% block content %}
+<h1>Your profile</h1>
+<form method="post" class="card form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <p class="muted">Signed in as {{ user.email }} ({{ user.role }}).</p>
+
+  <label for="display_name">Display name</label>
+  <input id="display_name" name="display_name" maxlength="100" required
+         value="{{ profile.display_name }}">
+
+  <label for="preferences">Fitness preferences (optional)</label>
+  <textarea id="preferences" name="preferences"
+            rows="3">{{ profile.preferences or '' }}</textarea>
+
+  <label for="daily_calorie_target">Daily calorie target (kcal, optional)</label>
+  <input id="daily_calorie_target" name="daily_calorie_target"
+         type="number" step="1" min="500" max="10000"
+         value="{{ profile.daily_calorie_target or '' }}">
+
+  <button type="submit">Save profile</button>
+</form>
+<p><a href="{{ url_for('auth.change_password') }}">Change password</a></p>
+{% endblock %}

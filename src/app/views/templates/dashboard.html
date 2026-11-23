@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Nexus{% endblock %}
+{% block content %}
+<h1>Daily summary</h1>
+<p class="page-sub">{{ day.strftime('%A %d %b %Y') }}</p>
+
+<form method="get" class="inline-fields card">
+  <span class="field">
+    <label for="date">Date</label>
+    <input id="date" name="date" type="date" value="{{ day.isoformat() }}">
+  </span>
+  <button type="submit">Show</button>
+</form>
+
+<section class="stats">
+  <div class="stat">
+    <div class="stat-label">Meal calories</div>
+    <div class="stat-value">{{ meal_kcal }}</div>
+    <div class="stat-extra">kcal logged</div>
+  </div>
+  {% if target is not none %}
+    {% if remaining >= 0 %}
+    <div class="stat good">
+      <div class="stat-label">Remaining</div>
+      <div class="stat-value">{{ remaining }}</div>
+      <div class="stat-extra">of {{ target }} kcal target</div>
+    </div>
+    {% else %}
+    <div class="stat bad">
+      <div class="stat-label">Above target</div>
+      <div class="stat-value">{{ -remaining }}</div>
+      <div class="stat-extra">over {{ target }} kcal target</div>
+    </div>
+    {% endif %}
+  {% else %}
+  <div class="stat">
+    <div class="stat-label">Calorie target</div>
+    <div class="stat-value">-</div>
+    <div class="stat-extra"><a href="{{ url_for('profile.show') }}">Set a target</a></div>
+  </div>
+  {% endif %}
+  <div class="stat">
+    <div class="stat-label">Workout time</div>
+    <div class="stat-value">{{ workout_minutes }}</div>
+    <div class="stat-extra">minutes{% if workout_kcal %}, {{ workout_kcal }} kcal{% endif %}</div>
+  </div>
+  <div class="stat">
+    <div class="stat-label">Active goals</div>
+    <div class="stat-value">{{ active_goals|length }}</div>
+    <div class="stat-extra">
+      {% if latest_weight %}weight: {{ latest_weight.value }} {{ latest_weight.unit }}
+      {% else %}no weight recorded{% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="grid">
+  <div class="card">
+    <h2>Meals</h2>
+    {% set ns = namespace(any=false) %}
+    {% for label, items in meals_by_label.items() %}
+      {% if items %}
+        {% set ns.any = true %}
+        <h3><span class="badge">{{ label }}</span></h3>
+        <ul>
+          {% for m in items %}
+            <li>{{ m.food.name }} - {{ m.quantity }} {{ m.food.serving_unit }}
+                ({{ m.calorie_snapshot }} kcal)</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endfor %}
+    {% if not ns.any %}
+      <p class="muted">No meals logged for this date.</p>
+    {% endif %}
+    <p class="total-line">Total intake: {{ meal_kcal }} kcal</p>
+    <p><a class="button" href="{{ url_for('tracking.meal_new') }}">Record a meal</a></p>
+  </div>
+
+  <div class="card">
+    <h2>Workouts</h2>
+    {% if workouts %}
+      <ul>
+        {% for w in workouts %}
+          <li><span class="badge">{{ w.activity_type }}</span>
+              {{ w.duration_minutes }} min
+              {% if w.estimated_kcal %}({{ w.estimated_kcal }} kcal){% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+      <p class="total-line">Total: {{ workout_minutes }} min{% if workout_kcal %}, {{ workout_kcal }} kcal{% endif %}</p>
+    {% else %}
+      <p class="muted">No workouts logged for this date.</p>
+    {% endif %}
+    <p><a class="button" href="{{ url_for('tracking.workout_new') }}">Record a workout</a></p>
+  </div>
+
+  <div class="card">
+    <h2>Active goals</h2>
+    {% if active_goals %}
+      <ul>
+        {% for g in active_goals %}
+          <li>{{ g.description }}
+              {% if g.target_value %} (target: {{ g.target_value }}){% endif %}
+              {% if g.target_date %} by {{ g.target_date }}{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">No active goals.</p>
+    {% endif %}
+    <p><a class="button" href="{{ url_for('goals.goal_new') }}">Add a goal</a></p>
+  </div>
+
+  <div class="card">
+    <h2>Latest weight</h2>
+    {% if latest_weight %}
+      <p>{{ latest_weight.value }} {{ latest_weight.unit }}
+         on {{ latest_weight.measured_on }}</p>
+    {% else %}
+      <p class="muted">No weight recorded yet.</p>
+    {% endif %}
+    <p><a class="button" href="{{ url_for('goals.measurements') }}">Record a measurement</a></p>
+  </div>
+</section>
+{% endblock %}
